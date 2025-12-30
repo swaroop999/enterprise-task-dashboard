@@ -1,27 +1,22 @@
 import React from "react";
-import { Download, Trash2, Save } from "lucide-react";
+import { Download, Trash2 } from "lucide-react";
 
 const SettingsView = ({ tasks, setTasks }) => {
-  // Feature: Download all tasks as a JSON file
-  const handleExport = () => {
-    const dataStr = JSON.stringify(tasks, null, 2);
-    const blob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `tasks-backup-${
-      new Date().toISOString().split("T")[0]
-    }.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  // NOTE: Copied from SO, handles JSON download
+  const downloadData = () => {
+    const dataStr =
+      "data:text/json;charset=utf-8," +
+      encodeURIComponent(JSON.stringify(tasks));
+    const node = document.createElement("a");
+    node.setAttribute("href", dataStr);
+    node.setAttribute("download", "tasks_backup.json");
+    document.body.appendChild(node);
+    node.click();
+    node.remove();
   };
 
-  // Feature: Wipe all data
-  const handleClearData = () => {
-    if (
-      window.confirm("Are you sure? This will delete all tasks permanently.")
-    ) {
+  const wipeData = () => {
+    if (window.confirm("Delete everything? This cannot be undone.")) {
       setTasks([]);
       localStorage.removeItem("enterprise-tasks");
     }
@@ -31,7 +26,6 @@ const SettingsView = ({ tasks, setTasks }) => {
     <div className="max-w-4xl">
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-slate-800">Settings</h2>
-        <p className="text-slate-500">Manage your task data and preferences</p>
       </div>
 
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
@@ -39,15 +33,11 @@ const SettingsView = ({ tasks, setTasks }) => {
           <h3 className="text-lg font-semibold text-slate-800">
             Data Management
           </h3>
-          <p className="text-sm text-slate-500">
-            Export your tasks or reset the application.
-          </p>
         </div>
 
         <div className="p-6 space-y-4">
-          {/* Export Button */}
           <button
-            onClick={handleExport}
+            onClick={downloadData}
             className="w-full flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors group"
           >
             <div className="flex items-center gap-3">
@@ -55,17 +45,16 @@ const SettingsView = ({ tasks, setTasks }) => {
                 <Download size={20} />
               </div>
               <div className="text-left">
-                <p className="font-medium text-slate-900">Export Data</p>
+                <p className="font-medium text-slate-900">Export JSON</p>
                 <p className="text-xs text-slate-500">
-                  Download a JSON backup of your tasks
+                  Download a local backup
                 </p>
               </div>
             </div>
           </button>
 
-          {/* Clear Button */}
           <button
-            onClick={handleClearData}
+            onClick={wipeData}
             className="w-full flex items-center justify-between p-4 border border-red-200 rounded-lg hover:bg-red-50 transition-colors group"
           >
             <div className="flex items-center gap-3">
@@ -75,7 +64,7 @@ const SettingsView = ({ tasks, setTasks }) => {
               <div className="text-left">
                 <p className="font-medium text-red-700">Clear All Data</p>
                 <p className="text-xs text-red-400">
-                  Permanently remove all tasks
+                  Permanently delete local storage
                 </p>
               </div>
             </div>
@@ -83,14 +72,9 @@ const SettingsView = ({ tasks, setTasks }) => {
         </div>
       </div>
 
-      {/* About Section */}
       <div className="mt-6 bg-white rounded-xl border border-slate-200 shadow-sm p-6">
         <h3 className="font-semibold text-slate-800 mb-2">About TaskFlow</h3>
-        <p className="text-sm text-slate-500 leading-relaxed">
-          Version 1.0.0 <br />A modern task management solution built with React
-          and Tailwind CSS. Designed for enterprise productivity with local
-          persistence and real-time analytics.
-        </p>
+        <p className="text-sm text-slate-500 leading-relaxed">v1.0.0</p>
       </div>
     </div>
   );

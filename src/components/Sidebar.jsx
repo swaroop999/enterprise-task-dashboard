@@ -1,16 +1,15 @@
 import React from "react";
 import { LayoutDashboard, BarChart3, Settings, X } from "lucide-react";
 
-const Sidebar = ({ activeView, setActiveView, isOpen, onClose }) => {
-  // Base classes for navigation buttons
-  const getButtonClass = (view) =>
+const Sidebar = ({ view, setView, open, setOpen }) => {
+  const btnClass = (id) =>
     `w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-      activeView === view
+      view === id
         ? "bg-blue-50 text-blue-700"
         : "text-slate-600 hover:bg-slate-50"
     }`;
 
-  const NavContent = () => (
+  const Nav = () => (
     <>
       <div className="h-16 flex items-center px-6 border-b border-slate-200 justify-between">
         <div className="flex items-center">
@@ -19,8 +18,10 @@ const Sidebar = ({ activeView, setActiveView, isOpen, onClose }) => {
           </div>
           <span className="font-bold text-lg">TaskFlow</span>
         </div>
-        {/* Close Button for Mobile */}
-        <button onClick={onClose} className="md:hidden text-slate-400">
+        <button
+          onClick={() => setOpen(false)}
+          className="md:hidden text-slate-400"
+        >
           <X size={20} />
         </button>
       </div>
@@ -28,28 +29,28 @@ const Sidebar = ({ activeView, setActiveView, isOpen, onClose }) => {
       <nav className="p-4 space-y-1">
         <button
           onClick={() => {
-            setActiveView("dashboard");
-            onClose();
+            setView("dashboard");
+            setOpen(false);
           }}
-          className={getButtonClass("dashboard")}
+          className={btnClass("dashboard")}
         >
           <LayoutDashboard size={18} /> Dashboard
         </button>
         <button
           onClick={() => {
-            setActiveView("analytics");
-            onClose();
+            setView("analytics");
+            setOpen(false);
           }}
-          className={getButtonClass("analytics")}
+          className={btnClass("analytics")}
         >
           <BarChart3 size={18} /> Analytics
         </button>
         <button
           onClick={() => {
-            setActiveView("settings");
-            onClose();
+            setView("settings");
+            setOpen(false);
           }}
-          className={getButtonClass("settings")}
+          className={btnClass("settings")}
         >
           <Settings size={18} /> Settings
         </button>
@@ -59,23 +60,18 @@ const Sidebar = ({ activeView, setActiveView, isOpen, onClose }) => {
 
   return (
     <>
-      {/* DESKTOP SIDEBAR (Visible on md+) */}
       <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200">
-        <NavContent />
+        <Nav />
       </aside>
 
-      {/* MOBILE SIDEBAR (Overlay + Drawer) */}
-      {isOpen && (
+      {open && (
         <div className="fixed inset-0 z-50 md:hidden flex">
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={onClose}
-          ></div>
-
-          {/* Drawer */}
+            onClick={() => setOpen(false)}
+          />
           <aside className="relative w-64 bg-white h-full shadow-2xl animate-in slide-in-from-left duration-200">
-            <NavContent />
+            <Nav />
           </aside>
         </div>
       )}

@@ -1,15 +1,16 @@
 import React from "react";
 
-const CreateTaskModal = ({ isOpen, onClose, onCreate }) => {
+const CreateTaskModal = ({ isOpen, onClose, onSave }) => {
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const submit = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    onCreate({
-      title: formData.get("title"),
-      description: formData.get("description"),
-      priority: formData.get("priority"),
+    const data = new FormData(e.target);
+    // console.log(Object.fromEntries(data));
+    onSave({
+      title: data.get("title"),
+      description: data.get("description"),
+      priority: data.get("priority"),
       status: "pending",
     });
     onClose();
@@ -19,7 +20,7 @@ const CreateTaskModal = ({ isOpen, onClose, onCreate }) => {
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 overflow-hidden">
         <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-          <h2 className="font-semibold text-lg">Create New Task</h2>
+          <h2 className="font-semibold text-lg">New Task</h2>
           <button
             onClick={onClose}
             className="text-slate-400 hover:text-slate-600"
@@ -27,7 +28,8 @@ const CreateTaskModal = ({ isOpen, onClose, onCreate }) => {
             ×
           </button>
         </div>
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+
+        <form onSubmit={submit} className="p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
               Title
@@ -75,7 +77,7 @@ const CreateTaskModal = ({ isOpen, onClose, onCreate }) => {
               type="submit"
               className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg"
             >
-              Create Task
+              Create
             </button>
           </div>
         </form>

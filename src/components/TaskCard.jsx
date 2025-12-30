@@ -2,12 +2,11 @@ import React from "react";
 import { Trash2, Calendar } from "lucide-react";
 import PriorityBadge from "./ui/PriorityBadge";
 
-const TaskCard = ({ task, onDragStart, onDelete }) => {
+const TaskCard = ({ task, onDrag, onDelete }) => {
   return (
     <div
       draggable
-      onDragStart={(e) => onDragStart(e, task)}
-      // FIXED: Removed "touch-none" so you can scroll on mobile
+      onDragStart={(e) => onDrag(e, task)}
       className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow cursor-move group"
     >
       <div className="flex justify-between items-start mb-2">
