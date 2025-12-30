@@ -60,21 +60,35 @@ const Sidebar = ({ view, setView, open, setOpen }) => {
 
   return (
     <>
+      {/* DESKTOP SIDEBAR */}
       <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200">
         <Nav />
       </aside>
 
-      {open && (
-        <div className="fixed inset-0 z-50 md:hidden flex">
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
-          />
-          <aside className="relative w-64 bg-white h-full shadow-2xl animate-in slide-in-from-left duration-200">
-            <Nav />
-          </aside>
-        </div>
-      )}
+      {/* MOBILE SIDEBAR (Drawer) */}
+      {/* We use invisible/visible + translate to animate it smoothly */}
+      <div
+        className={`fixed inset-0 z-50 md:hidden transition-all duration-300 ${
+          open ? "visible" : "invisible"
+        }`}
+      >
+        {/* Backdrop (Fades in) */}
+        <div
+          className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
+            open ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={() => setOpen(false)}
+        />
+
+        {/* Sidebar (Slides in) */}
+        <aside
+          className={`relative w-64 bg-white h-full shadow-2xl transition-transform duration-300 ease-in-out ${
+            open ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <Nav />
+        </aside>
+      </div>
     </>
   );
 };
