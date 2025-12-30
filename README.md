@@ -2,10 +2,7 @@
 
 A high-performance productivity suite built with **React.js** and **Tailwind CSS**. This application features a custom Kanban workflow, real-time linear search filtering, and an integrated analytics engine to visualize project velocity.
 
-> **Live Demo:** [Insert Your Vercel Link Here]
-
-![Project Preview](public/preview.png)
-_(Note: For the best look, take a screenshot of your dashboard, name it `preview.png`, and put it in your `public` folder. If you don't have one yet, delete this line!)_
+> **Live Demo:** https://enterprise-task-dashboard.vercel.app
 
 ## ✨ Key Features
 
@@ -63,4 +60,4 @@ Ensure you have Node.js installed on your machine.
 
 ---
 
-_Built by [Your Name] - 2025_
+_Built by Swaroop B - 2025_
