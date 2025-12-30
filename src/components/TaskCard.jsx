@@ -7,13 +7,14 @@ const TaskCard = ({ task, onDragStart, onDelete }) => {
     <div
       draggable
       onDragStart={(e) => onDragStart(e, task)}
-      className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow cursor-move touch-none group"
+      // FIXED: Removed "touch-none" so you can scroll on mobile
+      className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-shadow cursor-move group"
     >
       <div className="flex justify-between items-start mb-2">
         <PriorityBadge priority={task.priority} />
         <button
           onClick={() => onDelete(task.id)}
-          className="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="text-slate-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
         >
           <Trash2 size={16} />
         </button>
